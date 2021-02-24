@@ -87,10 +87,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[LOAD_COMPARE_PLAYER_SEASON_ADV_STATS]"
+					"storedProcedureName": "[stg].[LOAD_COMPARE_PLAYER_SEASON_ADV_STATS]"
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabaseLinkedService",
+					"referenceName": "fpv_dev_sql_db_linked_service",
 					"type": "LinkedServiceReference"
 				}
 			}

@@ -2,7 +2,7 @@
 	"name": "stg_market_values",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureSqlDatabaseLinkedService",
+			"referenceName": "fpv_dev_sql_db_linked_service",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -37,7 +37,7 @@
 			}
 		],
 		"typeProperties": {
-			"schema": "dbo",
+			"schema": "stg",
 			"table": "STG_MARKET_VALUES"
 		}
 	},
