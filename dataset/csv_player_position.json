@@ -2,7 +2,7 @@
 	"name": "csv_player_position",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureStorageLinkedService",
+			"referenceName": "fpv_dev_linked_service",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "player_position_v03.csv",
-				"container": "fpvnyersadatok"
+				"fileName": "player_position.csv",
+				"container": "stage"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",

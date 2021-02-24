@@ -2,7 +2,7 @@
 	"name": "csv_compare_player_season_adv_stats",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureStorageLinkedService",
+			"referenceName": "fpv_dev_linked_service",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "compare_player_season_adv_stats_v11_global_fwd.csv",
-				"container": "fpvnyersadatok"
+				"fileName": "compare_player_season_adv_stats.csv",
+				"container": "stage"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",
