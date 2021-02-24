@@ -2,7 +2,7 @@
 	"name": "csv_career_data",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureStorageLinkedService",
+			"referenceName": "fpv_dev_linked_service",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "career_data_v01.csv",
-				"container": "fpvnyersadatok"
+				"fileName": "career_data.csv",
+				"container": "stage"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",

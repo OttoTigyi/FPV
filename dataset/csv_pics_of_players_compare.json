@@ -2,7 +2,7 @@
 	"name": "csv_pics_of_players_compare",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureStorageLinkedService",
+			"referenceName": "fpv_dev_linked_service",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "pics_of_players_s.csv",
-				"container": "fpvnyersadatok"
+				"fileName": "pics_of_players_compare_s.csv",
+				"container": "stage"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",

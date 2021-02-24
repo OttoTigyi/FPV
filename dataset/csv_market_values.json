@@ -2,7 +2,7 @@
 	"name": "csv_market_values",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "AzureStorageLinkedService",
+			"referenceName": "fpv_dev_linked_service",
 			"type": "LinkedServiceReference"
 		},
 		"annotations": [],
@@ -10,8 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "marketValues_v01.csv",
-				"container": "fpvnyersadatok"
+				"fileName": "market_values.csv",
+				"container": "stage"
 			},
 			"columnDelimiter": ";",
 			"escapeChar": "\\",
