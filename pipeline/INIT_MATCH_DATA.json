@@ -1,9 +1,9 @@
 {
-	"name": "MARKET_VALUES",
+	"name": "INIT_MATCH_DATA",
 	"properties": {
 		"activities": [
 			{
-				"name": "market_values",
+				"name": "match_data",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -56,23 +56,23 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "csv_market_values",
+						"referenceName": "csv_match_data",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "stg_market_values",
+						"referenceName": "stg_match_data",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "load_market_values",
+				"name": "init_load_match_data",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "market_values",
+						"activity": "match_data",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -87,7 +87,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[stg].[LOAD_MARKET_VALUES]"
+					"storedProcedureName": "[stg].[INIT_LOAD_MATCH_DATA]"
 				},
 				"linkedServiceName": {
 					"referenceName": "fpv_dev_sql_db_linked_service",

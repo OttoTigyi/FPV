@@ -1,9 +1,9 @@
 {
-	"name": "MARKET_VALUES",
+	"name": "INIT_PLAYER_POSITION",
 	"properties": {
 		"activities": [
 			{
-				"name": "market_values",
+				"name": "player_position",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -56,23 +56,23 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "csv_market_values",
+						"referenceName": "csv_player_position",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "stg_market_values",
+						"referenceName": "stg_player_position",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "load_market_values",
+				"name": "init_load_player_position",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "market_values",
+						"activity": "player_position",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -87,7 +87,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[stg].[LOAD_MARKET_VALUES]"
+					"storedProcedureName": "[stg].[INIT_LOAD_PLAYER_POSITION]"
 				},
 				"linkedServiceName": {
 					"referenceName": "fpv_dev_sql_db_linked_service",

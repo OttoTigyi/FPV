@@ -87,10 +87,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[LOAD_CAREER_DATA]"
+					"storedProcedureName": "[stg].[LOAD_CAREER_DATA]"
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabaseLinkedService",
+					"referenceName": "fpv_dev_sql_db_linked_service",
 					"type": "LinkedServiceReference"
 				}
 			}

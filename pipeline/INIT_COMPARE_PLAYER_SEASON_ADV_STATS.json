@@ -1,9 +1,9 @@
 {
-	"name": "MARKET_VALUES",
+	"name": "INIT_COMPARE_PLAYER_SEASON_ADV_STATS",
 	"properties": {
 		"activities": [
 			{
-				"name": "market_values",
+				"name": "compare_player_season_adv_stats",
 				"type": "Copy",
 				"dependsOn": [],
 				"policy": {
@@ -30,7 +30,7 @@
 						"type": "AzureSqlSink"
 					},
 					"enableStaging": false,
-					"enableSkipIncompatibleRow": false,
+					"enableSkipIncompatibleRow": true,
 					"logSettings": {
 						"enableCopyActivityLog": true,
 						"copyActivityLogSettings": {
@@ -56,23 +56,23 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "csv_market_values",
+						"referenceName": "csv_compare_player_season_adv_stats",
 						"type": "DatasetReference"
 					}
 				],
 				"outputs": [
 					{
-						"referenceName": "stg_market_values",
+						"referenceName": "stg_compare_player_season_adv_stats",
 						"type": "DatasetReference"
 					}
 				]
 			},
 			{
-				"name": "load_market_values",
+				"name": "init_load_compare_player_season_adv_stats",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
-						"activity": "market_values",
+						"activity": "compare_player_season_adv_stats",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -87,7 +87,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[stg].[LOAD_MARKET_VALUES]"
+					"storedProcedureName": "[stg].[INIT_LOAD_COMPARE_PLAYER_SEASON_ADV_STATS]"
 				},
 				"linkedServiceName": {
 					"referenceName": "fpv_dev_sql_db_linked_service",

@@ -87,10 +87,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[LOAD_PLAYER_TRANSFER]"
+					"storedProcedureName": "[stg].[LOAD_PLAYER_TRANSFER]"
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabaseLinkedService",
+					"referenceName": "fpv_dev_sql_db_linked_service",
 					"type": "LinkedServiceReference"
 				}
 			}
