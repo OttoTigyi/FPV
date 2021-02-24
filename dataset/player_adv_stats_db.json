@@ -1,0 +1,45 @@
+{
+	"name": "player_adv_stats_db",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureSqlDatabaseLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "competition",
+				"type": "varchar"
+			},
+			{
+				"name": "season",
+				"type": "varchar"
+			},
+			{
+				"name": "seasonId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "playerId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "position_name",
+				"type": "varchar"
+			},
+			{
+				"name": "playedMinutes",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "dbo",
+			"table": "PLAYER_ADV_STATS"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
