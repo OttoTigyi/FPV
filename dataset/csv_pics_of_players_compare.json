@@ -1,0 +1,29 @@
+{
+	"name": "csv_pics_of_players_compare",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureStorageLinkedService",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "pics_of_players_s.csv",
+				"container": "fpvnyersadatok"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
