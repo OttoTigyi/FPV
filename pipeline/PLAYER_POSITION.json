@@ -39,10 +39,10 @@
 						},
 						"logLocationSettings": {
 							"linkedServiceName": {
-								"referenceName": "AzureStorageLinkedService",
+								"referenceName": "fpv_dev_linked_service",
 								"type": "LinkedServiceReference"
 							},
-							"path": "logs"
+							"path": "log"
 						}
 					},
 					"translator": {
