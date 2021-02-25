@@ -15,10 +15,10 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[T_STG_TABLES]"
+					"storedProcedureName": "[stg].[T_STG_TABLES]"
 				},
 				"linkedServiceName": {
-					"referenceName": "AzureSqlDatabaseLinkedService",
+					"referenceName": "fpv_dev_sql_db_linked_service",
 					"type": "LinkedServiceReference"
 				}
 			},
