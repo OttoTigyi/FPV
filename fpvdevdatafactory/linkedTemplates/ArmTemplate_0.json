@@ -1,0 +1,692 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "fpvdevdatafactory"
+		},
+		"AzureBlobStorage1_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureBlobStorage1'"
+		},
+		"AzureSqlDatabaseLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureSqlDatabaseLinkedService'"
+		},
+		"AzureStorageLinkedService_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'AzureStorageLinkedService'"
+		},
+		"fpv_dev_linked_service_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'fpv_dev_linked_service'"
+		},
+		"fpv_dev_sql_db_linked_service_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'fpv_dev_sql_db_linked_service'"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureBlobStorage1')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureBlobStorage1_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureSqlDatabaseLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureSqlDatabaseLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/AzureStorageLinkedService')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('AzureStorageLinkedService_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/fpv_dev_linked_service')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureBlobStorage",
+				"typeProperties": {
+					"connectionString": "[parameters('fpv_dev_linked_service_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/fpv_dev_sql_db_linked_service')]",
+			"type": "Microsoft.DataFactory/factories/linkedServices",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"type": "AzureSqlDatabase",
+				"typeProperties": {
+					"connectionString": "[parameters('fpv_dev_sql_db_linked_service_connectionString')]"
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_career_data')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "career_data.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_compare_player_season_adv_stats')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "compare_player_season_adv_stats.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_market_values')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "market_values.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_match_data')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "match_data.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_pics_of_players_compare')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "pics_of_players_compare_s.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_player_basic')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "player_basic.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_player_position')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "player_position.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_player_season_adv_stats')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "player_season_adv_stats.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/csv_player_transfer')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "player_transfer.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stg_career_data')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_sql_db_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "competition",
+						"type": "varchar"
+					},
+					{
+						"name": "season",
+						"type": "varchar"
+					},
+					{
+						"name": "seasonId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "playerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "position_name",
+						"type": "varchar"
+					},
+					{
+						"name": "playedMinutes",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "STG_CAREER_DATA"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_sql_db_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stg_compare_player_season_adv_stats')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_sql_db_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "competition",
+						"type": "varchar"
+					},
+					{
+						"name": "season",
+						"type": "varchar"
+					},
+					{
+						"name": "seasonId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "playerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "position_name",
+						"type": "varchar"
+					},
+					{
+						"name": "playedMinutes",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "STG_COMPARE_PLAYER_SEASON_ADV_STATS"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_sql_db_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stg_market_values')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_sql_db_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "competition",
+						"type": "varchar"
+					},
+					{
+						"name": "season",
+						"type": "varchar"
+					},
+					{
+						"name": "seasonId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "playerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "position_name",
+						"type": "varchar"
+					},
+					{
+						"name": "playedMinutes",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "STG_MARKET_VALUES"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_sql_db_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stg_match_data')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_sql_db_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "competition",
+						"type": "varchar"
+					},
+					{
+						"name": "season",
+						"type": "varchar"
+					},
+					{
+						"name": "seasonId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "playerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "position_name",
+						"type": "varchar"
+					},
+					{
+						"name": "playedMinutes",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "STG_MATCH_DATA"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_sql_db_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stg_player_basic')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_sql_db_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "competition",
+						"type": "varchar"
+					},
+					{
+						"name": "season",
+						"type": "varchar"
+					},
+					{
+						"name": "seasonId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "playerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "position_name",
+						"type": "varchar"
+					},
+					{
+						"name": "playedMinutes",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "STG_PLAYER_BASIC"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_sql_db_linked_service')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stg_player_position')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_sql_db_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "competition",
+						"type": "varchar"
+					},
+					{
+						"name": "season",
+						"type": "varchar"
+					},
+					{
+						"name": "seasonId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "playerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "position_name",
+						"type": "varchar"
+					},
+					{
+						"name": "playedMinutes",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "STG_PLAYER_POSITION"
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/fpv_dev_sql_db_linked_service')]"
+			]
+		}
+	]
+}
