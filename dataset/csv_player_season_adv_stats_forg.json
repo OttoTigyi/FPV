@@ -1,0 +1,29 @@
+{
+	"name": "csv_player_season_adv_stats_forg",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "fpv_dev_linked_service",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "player_season_adv_stats_forg.csv",
+				"container": "stage"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
