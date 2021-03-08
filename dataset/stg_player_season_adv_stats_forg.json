@@ -1,0 +1,45 @@
+{
+	"name": "stg_player_season_adv_stats_forg",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "fpv_dev_sql_db_linked_service",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "competition",
+				"type": "varchar"
+			},
+			{
+				"name": "season",
+				"type": "varchar"
+			},
+			{
+				"name": "seasonId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "playerId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "position_name",
+				"type": "varchar"
+			},
+			{
+				"name": "playedMinutes",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "STG_PLAYER_SEASON_ADV_STATS_FORG"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
