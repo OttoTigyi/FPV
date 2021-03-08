@@ -201,6 +201,84 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/csv_season_data_clusters_global')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "DelimitedText",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobStorageLocation",
+						"fileName": "season_data_clusters_global.csv",
+						"container": "stage"
+					},
+					"columnDelimiter": ";",
+					"escapeChar": "\\",
+					"firstRowAsHeader": true,
+					"quoteChar": "\""
+				},
+				"schema": [
+					{
+						"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+						"type": "String"
+					}
+				]
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/stg_season_data_clusters_global')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "fpv_dev_sql_db_linked_service",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "AzureSqlTable",
+				"schema": [
+					{
+						"name": "competition",
+						"type": "varchar"
+					},
+					{
+						"name": "season",
+						"type": "varchar"
+					},
+					{
+						"name": "seasonId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "playerId",
+						"type": "int",
+						"precision": 10
+					},
+					{
+						"name": "position_name",
+						"type": "varchar"
+					},
+					{
+						"name": "playedMinutes",
+						"type": "int",
+						"precision": 10
+					}
+				],
+				"typeProperties": {
+					"schema": "stg",
+					"table": "STG_SEASON_DATA_CLUSTERS_GLOBAL"
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/CAREER_DATA')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1564,14 +1642,14 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/MASTER')]",
+			"name": "[concat(parameters('factoryName'), '/SEASON_DATA_CLUSTER_GLOBAL')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "t_stg_tables",
-						"type": "SqlServerStoredProcedure",
+						"name": "season_data_cluster_global",
+						"type": "Copy",
 						"dependsOn": [],
 						"policy": {
 							"timeout": "7.00:00:00",
@@ -1582,403 +1660,67 @@
 						},
 						"userProperties": [],
 						"typeProperties": {
-							"storedProcedureName": "[[stg].[T_STG_TABLES]"
+							"source": {
+								"type": "DelimitedTextSource",
+								"storeSettings": {
+									"type": "AzureBlobStorageReadSettings",
+									"recursive": true,
+									"enablePartitionDiscovery": false
+								},
+								"formatSettings": {
+									"type": "DelimitedTextReadSettings"
+								}
+							},
+							"sink": {
+								"type": "AzureSqlSink"
+							},
+							"enableStaging": false,
+							"enableSkipIncompatibleRow": false,
+							"logSettings": {
+								"enableCopyActivityLog": true,
+								"copyActivityLogSettings": {
+									"logLevel": "Warning",
+									"enableReliableLogging": false
+								},
+								"logLocationSettings": {
+									"linkedServiceName": {
+										"referenceName": "fpv_dev_linked_service",
+										"type": "LinkedServiceReference"
+									},
+									"path": "log"
+								}
+							},
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
 						},
-						"linkedServiceName": {
-							"referenceName": "fpv_dev_sql_db_linked_service",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "career_data",
-						"type": "ExecutePipeline",
-						"dependsOn": [
+						"inputs": [
 							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
+								"referenceName": "csv_season_data_clusters_global",
+								"type": "DatasetReference",
+								"parameters": {}
 							}
 						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "CAREER_DATA",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "compare_player_season_adv_stats",
-						"type": "ExecutePipeline",
-						"dependsOn": [
+						"outputs": [
 							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
+								"referenceName": "stg_season_data_clusters_global",
+								"type": "DatasetReference",
+								"parameters": {}
 							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "COMPARE_PLAYER_SEASON_ADV_STATS",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "market_values",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "MARKET_VALUES",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "match_data",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "MATCH_DATA",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "player_basic",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PLAYER_BASIC",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "player_position",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PLAYER_POSITION",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "player_season_adv_stats",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PLAYER_SEASON_ADV_STATS",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "player_transfer",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PLAYER_TRANSFER",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
+						]
 					}
 				],
 				"annotations": [],
-				"lastPublishTime": "2021-02-23T13:04:22Z"
+				"lastPublishTime": "2021-02-23T12:57:16Z"
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/CAREER_DATA')]",
-				"[concat(variables('factoryId'), '/pipelines/COMPARE_PLAYER_SEASON_ADV_STATS')]",
-				"[concat(variables('factoryId'), '/pipelines/MARKET_VALUES')]",
-				"[concat(variables('factoryId'), '/pipelines/MATCH_DATA')]",
-				"[concat(variables('factoryId'), '/pipelines/PLAYER_BASIC')]",
-				"[concat(variables('factoryId'), '/pipelines/PLAYER_POSITION')]",
-				"[concat(variables('factoryId'), '/pipelines/PLAYER_SEASON_ADV_STATS')]",
-				"[concat(variables('factoryId'), '/pipelines/PLAYER_TRANSFER')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/MASTER_INIT')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "t_stg_tables",
-						"type": "SqlServerStoredProcedure",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"storedProcedureName": "[[stg].[T_STG_TABLES]"
-						},
-						"linkedServiceName": {
-							"referenceName": "fpv_dev_sql_db_linked_service",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
-						"name": "career_data",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "CAREER_DATA",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "init_compare_player_season_adv_stats",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "INIT_COMPARE_PLAYER_SEASON_ADV_STATS",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "market_values",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "MARKET_VALUES",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "init_match_data",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "INIT_MATCH_DATA",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "player_basic",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PLAYER_BASIC",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "init_player_position",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "INIT_PLAYER_POSITION",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "init_player_season_adv_stats",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "INIT_PLAYER_SEASON_ADV_STATS",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "player_transfer",
-						"type": "ExecutePipeline",
-						"dependsOn": [
-							{
-								"activity": "t_stg_tables",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "PLAYER_TRANSFER",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					}
-				],
-				"annotations": [],
-				"lastPublishTime": "2021-02-23T13:04:22Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/CAREER_DATA')]",
-				"[concat(variables('factoryId'), '/pipelines/INIT_COMPARE_PLAYER_SEASON_ADV_STATS')]",
-				"[concat(variables('factoryId'), '/pipelines/MARKET_VALUES')]",
-				"[concat(variables('factoryId'), '/pipelines/INIT_MATCH_DATA')]",
-				"[concat(variables('factoryId'), '/pipelines/PLAYER_BASIC')]",
-				"[concat(variables('factoryId'), '/pipelines/INIT_PLAYER_POSITION')]",
-				"[concat(variables('factoryId'), '/pipelines/INIT_PLAYER_SEASON_ADV_STATS')]",
-				"[concat(variables('factoryId'), '/pipelines/PLAYER_TRANSFER')]"
+				"[concat(variables('factoryId'), '/datasets/csv_season_data_clusters_global')]",
+				"[concat(variables('factoryId'), '/datasets/stg_season_data_clusters_global')]"
 			]
 		}
 	]
