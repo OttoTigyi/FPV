@@ -1,5 +1,5 @@
 {
-	"name": "PLAYER_SEASON_ADV_STATS_FORG",
+	"name": "INIT_PLAYER_SEASON_ADV_STATS_FORG",
 	"properties": {
 		"activities": [
 			{
@@ -68,7 +68,7 @@
 				]
 			},
 			{
-				"name": "load_player_season_adv_stats_forg",
+				"name": "load_init_player_season_adv_stats_forg",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{
@@ -87,7 +87,7 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[stg].[LOAD_PLAYER_SEASON_ADV_STATS_FORG]"
+					"storedProcedureName": "[stg].[INIT_LOAD_PLAYER_SEASON_ADV_STATS_FORG]"
 				},
 				"linkedServiceName": {
 					"referenceName": "fpv_dev_sql_db_linked_service",
