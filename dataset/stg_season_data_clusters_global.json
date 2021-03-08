@@ -1,0 +1,45 @@
+{
+	"name": "stg_season_data_clusters_global",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "fpv_dev_sql_db_linked_service",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": [
+			{
+				"name": "competition",
+				"type": "varchar"
+			},
+			{
+				"name": "season",
+				"type": "varchar"
+			},
+			{
+				"name": "seasonId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "playerId",
+				"type": "int",
+				"precision": 10
+			},
+			{
+				"name": "position_name",
+				"type": "varchar"
+			},
+			{
+				"name": "playedMinutes",
+				"type": "int",
+				"precision": 10
+			}
+		],
+		"typeProperties": {
+			"schema": "stg",
+			"table": "STG_SEASON_DATA_CLUSTERS_GLOBAL"
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

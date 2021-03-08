@@ -1,0 +1,29 @@
+{
+	"name": "csv_season_data_clusters_global",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "fpv_dev_linked_service",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "season_data_clusters_global.csv",
+				"container": "stage"
+			},
+			"columnDelimiter": ";",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "competition;season;seasonId;playerId;position_name;playedMinutes",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
