@@ -181,6 +181,46 @@
 					},
 					"waitOnCompletion": true
 				}
+			},
+			{
+				"name": "player_season_adv_stats_forg",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "t_stg_tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "PLAYER_SEASON_ADV_STATS_FORG",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "season_data_cluster_global",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "t_stg_tables",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "SEASON_DATA_CLUSTER_GLOBAL",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
+				}
 			}
 		],
 		"annotations": [],
