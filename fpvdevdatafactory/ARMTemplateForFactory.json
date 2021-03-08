@@ -1002,6 +1002,48 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
+					},
+					{
+						"name": "player_season_adv_stats_forg",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "t_stg_tables",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "PLAYER_SEASON_ADV_STATS_FORG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "season_data_cluster_global",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "t_stg_tables",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SEASON_DATA_CLUSTER_GLOBAL",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"annotations": [],
@@ -1016,7 +1058,9 @@
 				"[concat(variables('factoryId'), '/pipelines/PLAYER_BASIC')]",
 				"[concat(variables('factoryId'), '/pipelines/PLAYER_POSITION')]",
 				"[concat(variables('factoryId'), '/pipelines/PLAYER_SEASON_ADV_STATS')]",
-				"[concat(variables('factoryId'), '/pipelines/PLAYER_TRANSFER')]"
+				"[concat(variables('factoryId'), '/pipelines/PLAYER_TRANSFER')]",
+				"[concat(variables('factoryId'), '/pipelines/PLAYER_SEASON_ADV_STATS_FORG')]",
+				"[concat(variables('factoryId'), '/pipelines/SEASON_DATA_CLUSTER_GLOBAL')]"
 			]
 		},
 		{
@@ -1212,6 +1256,48 @@
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
+					},
+					{
+						"name": "season_data_cluster_global",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "t_stg_tables",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "SEASON_DATA_CLUSTER_GLOBAL",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "init_player_season_adv_stats_forg",
+						"type": "ExecutePipeline",
+						"dependsOn": [
+							{
+								"activity": "t_stg_tables",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "INIT_PLAYER_SEASON_ADV_STATS_FORG",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
 					}
 				],
 				"annotations": [],
@@ -1226,7 +1312,9 @@
 				"[concat(variables('factoryId'), '/pipelines/PLAYER_BASIC')]",
 				"[concat(variables('factoryId'), '/pipelines/INIT_PLAYER_POSITION')]",
 				"[concat(variables('factoryId'), '/pipelines/INIT_PLAYER_SEASON_ADV_STATS')]",
-				"[concat(variables('factoryId'), '/pipelines/PLAYER_TRANSFER')]"
+				"[concat(variables('factoryId'), '/pipelines/PLAYER_TRANSFER')]",
+				"[concat(variables('factoryId'), '/pipelines/SEASON_DATA_CLUSTER_GLOBAL')]",
+				"[concat(variables('factoryId'), '/pipelines/INIT_PLAYER_SEASON_ADV_STATS_FORG')]"
 			]
 		},
 		{
