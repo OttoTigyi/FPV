@@ -1524,6 +1524,33 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "load_player_season_adv_stats_forg",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "player_season_adv_stats",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[stg].[LOAD_PLAYER_SEASON_ADV_STATS_FORG]"
+						},
+						"linkedServiceName": {
+							"referenceName": "fpv_dev_sql_db_linked_service",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"annotations": [],
@@ -1713,6 +1740,33 @@
 								"parameters": {}
 							}
 						]
+					},
+					{
+						"name": "load_season_data_cluster_global",
+						"type": "SqlServerStoredProcedure",
+						"dependsOn": [
+							{
+								"activity": "season_data_cluster_global",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"storedProcedureName": "[[stg].[LOAD_SEASON_DATA_CLUSTERS_GLOBAL]"
+						},
+						"linkedServiceName": {
+							"referenceName": "fpv_dev_sql_db_linked_service",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"annotations": [],
